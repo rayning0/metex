@@ -1,5 +1,19 @@
 defmodule Metex.Worker do
-  def temperature_of(location) do
+  @spec loop :: no_return
+  def loop do
+    receive do
+      {sender_pid, location} ->
+        send(sender_pid, {:ok, temperature_of(location)})
+
+      _ ->
+        IO.puts("Don't know how to process this message")
+    end
+
+    loop()
+  end
+
+  @spec temperature_of(binary) :: <<_::40, _::_*8>>
+  defp temperature_of(location) do
     result = url_for(location) |> HTTPoison.get() |> parse_response
 
     case result do
@@ -19,7 +33,6 @@ defmodule Metex.Worker do
   defp parse_response({:ok, %HTTPoison.Response{body: body, status_code: 200}}) do
     body
     |> Jason.decode!()
-    # |> IO.inspect()
     |> compute_temperature
   end
 

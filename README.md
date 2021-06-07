@@ -1,6 +1,6 @@
 # Metex
 
-**TODO: Add description**
+Weather app from [The Little Elixir & OTP Guidebook](https://www.manning.com/books/the-little-elixir-and-otp-guidebook). First without concurrency. Then with concurrency.
 
 ## Installation
 
