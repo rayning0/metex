@@ -1,6 +1,6 @@
-# Metex: Weather app
+# Metex: Weather app from [The Little Elixir & OTP Guidebook](https://github.com/rayning0/elixir-otp-guidebook).
 
-From [The Little Elixir & OTP Guidebook](https://github.com/rayning0/elixir-otp-guidebook). We build 2 versions: non-concurrent, then concurrent.
+We build 2 versions: non-concurrent, then concurrent.
 
 ## Installation
 
