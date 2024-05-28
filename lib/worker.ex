@@ -11,31 +11,32 @@ defmodule Metex.Worker do
     loop()
   end
 
-  defp temperature_of(location) do
+  def temperature_of(location) do
     result = url_for(location) |> HTTPoison.get() |> parse_response
 
     case result do
       {:ok, temp} ->
-        "#{location}: #{temp}°C"
+        "#{location}: #{temp}°F"
 
       :error ->
         "#{location} not found"
     end
   end
 
-  # "units=metric" returns Celsius. Without it, this API call returns Kelvin.
+  # "units=metric" returns Celsius. "units=imperial" returns Fahrenheit. Without it, API call returns Kelvin.
   def url_for(location) do
     location = URI.encode(location)
-    "http://api.openweathermap.org/data/2.5/weather?q=#{location}&units=metric&appid=#{apikey()}"
+
+    "http://api.openweathermap.org/data/2.5/weather?q=#{location}&units=imperial&appid=#{apikey()}"
   end
 
   # Uses pattern matching to get "body". If API result does not match this map exactly, view as error
-  defp parse_response({:ok, %HTTPoison.Response{body: body, status_code: 200}}) do
+  def parse_response({:ok, %HTTPoison.Response{body: body, status_code: 200}}) do
     body |> Jason.decode!() |> compute_temperature
   end
 
   # Any other HTTPoison response that's NOT 200 status is an error
-  defp parse_response(_) do
+  def parse_response(_) do
     :error
   end
 
