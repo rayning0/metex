@@ -1,5 +1,5 @@
 defmodule Metex.Worker do
-  def loop do
+  def(loop) do
     receive do
       {sender_pid, location} ->
         send(sender_pid, {:ok, temperature_of(location)})
@@ -12,7 +12,7 @@ defmodule Metex.Worker do
   end
 
   def temperature_of(location) do
-    result = url_for(location) |> HTTPoison.get() |> parse_response
+    result = url_for(location) |> http_client().get() |> parse_response
 
     case result do
       {:ok, temp} ->
@@ -53,5 +53,9 @@ defmodule Metex.Worker do
 
   defp apikey do
     System.get_env("WEATHER_API_KEY")
+  end
+
+  defp http_client do
+    Application.get_env(:metex, :http_client)
   end
 end
